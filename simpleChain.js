@@ -118,3 +118,25 @@ class Blockchain{
 
 
 
+// (function theLoop (i) {
+//   setTimeout( () => {
+//       let blockTest = new Block("Test Block - " + (i + 1));
+//       new Blockchain().addBlock(new Block(`Test data ${i}`)).then((result) => {
+//           console.log(result);
+//           i++;
+//           if (i < 10) theLoop(i);
+//       },
+//       },),
+//   }, 10000);
+// })(0);
+
+(function theLoop (i) {
+  setTimeout(function () {
+      let blockTest = new Block("Test Block - " + (i + 1));
+      Blockchain.addBlock(blockTest).then((result) => {
+          console.log(result);
+          i++;
+          if (i < 10) theLoop(i);
+      });
+  }, 10000);
+})(0);
