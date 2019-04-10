@@ -5,7 +5,7 @@
 const SHA256 = require('crypto-js/sha256');
 const level = require('level');
 const chainDB = './chaindata';
-const db = level(chainDB);
+const chain = level(chainDB);
 
 /* ===== Block Class ==============================
 |  Class with a constructor for block 			   |
@@ -27,9 +27,8 @@ class Block{
 
 class Blockchain{
   constructor(){
-
-    this.chain = level('./chaindata');
-    this.chain.put(0,JSON.stringify(Block.genesisBlock()))
+    this.chain = level("./chaindata");
+    this.chain.put(0,JSON.stringify(new Block("data")))
   }
 
 getBlockHeight(){
@@ -47,6 +46,7 @@ getBlockHeight(){
     });
 });
 }
+
 
 
   // Add new block
