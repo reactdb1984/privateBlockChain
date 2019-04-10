@@ -27,23 +27,38 @@ class Block{
 
 class Blockchain{
   constructor(){
-    let height = getBlockHeight().then((height) => {
-      newBlock.Height = height + 1;
-  })
 
     this.chain = level('./chaindata');
     this.chain.put(0,JSON.stringify(Block.genesisBlock()))
   }
 
+getBlockHeight(){
+  return new Promise(function(resolve, reject){
+  let i=0;
+    this.chain.createReadStream()
+    .on('data', function (data) {
+        i++;
+    })
+    .on('error', function (err) {
+        reject(err)
+    })
+    .on('close', function () {
+        resolve(i);
+    });
+});
+}
+
+
   // Add new block
  async addBlock(newBlock){
+
     // Block height
-    newBlock.height = this.getBlockHeight();
+    newBlock.height = await this.getBlockHeight();
     // UTC timestamp
     newBlock.time = new Date().getTime().toString().slice(0,-3);
     // previous block hash
    
-    newBlock.previousBlockHash = this.getBlock(this.getBlockHeight -1).hash;
+    newBlock.previousBlockHash = await this.getBlock(this.getBlockHeight() -1).hash;
     
     // Block hash with SHA256 using newBlock and converting to a string
     newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
