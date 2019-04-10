@@ -77,13 +77,12 @@ getBlockHeight(){
     getBlock(blockHeight){
       // return object as a single string
       return new Promise((resolve, reject) => {
-        db.get(key, function(err, value) {
+        this.chain.get(blockHeight, function(err, value) {
             if (err) return console.log('Not found!', err);
             resolve(value);
         });
     })
     }
-
     // validate block
    async validateBlock(blockHeight){
       // get block object
@@ -145,13 +144,27 @@ getBlockHeight(){
 //   }, 10000);
 // })(0);
 
+// (function theLoop (i) {
+//   setTimeout(function () {
+//       let blockTest = new Block("Test Block - " + (i + 1));
+//      new Blockchain.addBlock(blockTest).then((result) => {
+//           console.log(result);
+//           i++;
+//           if (i < 10) theLoop(i);
+//       });
+//   }, 10000);
+// })(0);
+
+
+
 (function theLoop (i) {
-  setTimeout(function () {
-      let blockTest = new Block("Test Block - " + (i + 1));
-      Blockchain.addBlock(blockTest).then((result) => {
-          console.log(result);
-          i++;
-          if (i < 10) theLoop(i);
-      });
-  }, 10000);
-})(0);
+  setTimeout(() => {
+    new Blockchain().addBlock(new Block(`Test data ${i}`)).then(() => {
+      if (--i) {
+        theLoop(i)
+      }
+    })
+  }, 100);
+})(10);
+
+setTimeout(() => new Blockchain().validateChain(), 2000)
