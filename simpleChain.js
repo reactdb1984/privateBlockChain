@@ -2,10 +2,8 @@
 |  Learn more: Crypto-js: https://github.com/brix/crypto-js  |
 |  =========================================================*/
 
-const SHA256 = require('crypto-js/sha256');
-const level = require('level');
-const chainDB = './chaindata';
-const chain = level(chainDB);
+const SHA256 = require("crypto-js/sha256");
+const level = require("level");
 
 /* ===== Block Class ==============================
 |  Class with a constructor for block 			   |
@@ -32,16 +30,16 @@ class Blockchain{
   }
 
 getBlockHeight(){
-  return new Promise(function(resolve, reject){
+  return new Promise((resolve, reject)  => {
   let i=0;
-    this.chain.createReadStream()
-    .on('data', function (data) {
+    chain.createReadStream()
+    .on('data',  (data) => {
         i++;
     })
-    .on('error', function (err) {
+    .on('error',  (err) => {
         reject(err)
     })
-    .on('close', function () {
+    .on('close',  () => {
         resolve(i);
     });
 });
@@ -50,7 +48,7 @@ getBlockHeight(){
 
 
   // Add new block
- async addBlock(newBlock){
+ async addBlock(newBlock) {
 
     // Block height
     newBlock.height = await this.getBlockHeight();
@@ -58,14 +56,15 @@ getBlockHeight(){
     newBlock.time = new Date().getTime().toString().slice(0,-3);
     // previous block hash
    
-    newBlock.previousBlockHash = await this.getBlock(this.getBlockHeight() -1).hash;
+    newBlock.previousBlockHash = await this.getBlock( await this.getBlockHeight() -1).hash;
     
     // Block hash with SHA256 using newBlock and converting to a string
     newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
     // Adding block object to chain
-  	this.chain.put(newBlock.height, JSON.stringify(newBlock).toString()
+   await	this.chain.put(newBlock.height, JSON.stringify(newBlock).toString()
     );
   }
+
 
 
 
@@ -156,15 +155,13 @@ getBlockHeight(){
 // })(0);
 
 
-
 (function theLoop (i) {
-  setTimeout(() => {
-    new Blockchain().addBlock(new Block(`Test data ${i}`)).then(() => {
-      if (--i) {
-        theLoop(i)
-      }
-    })
-  }, 100);
-})(10);
-
-setTimeout(() => new Blockchain().validateChain(), 2000)
+  setTimeout(function () {
+      let blockTest = new Block("Test Block - " + (i + 1));
+      Blockchain.addBlock(blockTest).then((result) => {
+          console.log(result);
+          i++;
+          if (i < 10) theLoop(i);
+      });
+  }, 10000);
+})(0);
