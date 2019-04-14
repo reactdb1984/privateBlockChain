@@ -32,7 +32,7 @@ class Blockchain{
 getBlockHeight(){
   return new Promise((resolve, reject)  => {
   let i=0;
-    chain.createReadStream()
+    this.chain.createReadStream()
     .on('data',  (data) => {
         i++;
     })
@@ -46,23 +46,26 @@ getBlockHeight(){
 }
 
 
+async addBlock(newBlock){
 
+  let createdBlock = await this.createBlock(newBlock)
+      this.chain.put(createdBlock.height,JSON.stringify(createdBlock))
+      return createdBlock;
+  }
   // Add new block
- async addBlock(newBlock) {
+ async createBlock(newBlock) {
 
-    // Block height
-    newBlock.height = await this.getBlockHeight();
-    // UTC timestamp
-    newBlock.time = new Date().getTime().toString().slice(0,-3);
-    // previous block hash
-   
-    newBlock.previousBlockHash = await this.getBlock( await this.getBlockHeight() -1).hash;
+  let blockHeight = await this.getBlockHeight();
+     let lastBlock = await this.getBlock(l-1)
+
+         newBlock.height = blockHeight;
+
+         newBlock.time = new Date().getTime().toString().slice(0,-3);
+
+         newBlock.previousBlockHash = lastBlock.hash;
+         
+         newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
     
-    // Block hash with SHA256 using newBlock and converting to a string
-    newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
-    // Adding block object to chain
-   await	this.chain.put(newBlock.height, JSON.stringify(newBlock).toString()
-    );
   }
 
 
@@ -165,3 +168,4 @@ getBlockHeight(){
       });
   }, 10000);
 })(0);
+
