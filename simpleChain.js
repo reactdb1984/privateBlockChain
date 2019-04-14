@@ -56,7 +56,7 @@ async addBlock(newBlock){
  async createBlock(newBlock) {
 
   let blockHeight = await this.getBlockHeight();
-     let lastBlock = await this.getBlock(l-1)
+     let lastBlock = await this.getBlock(blockHeight-1)
 
          newBlock.height = blockHeight;
 
@@ -65,6 +65,9 @@ async addBlock(newBlock){
          newBlock.previousBlockHash = lastBlock.hash;
          
          newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
+    return 
+  
+    newBlock 
     
   }
 
@@ -158,14 +161,27 @@ async addBlock(newBlock){
 // })(0);
 
 
-(function theLoop (i) {
-  setTimeout(function () {
-      let blockTest = new Block("Test Block - " + (i + 1));
-      Blockchain.addBlock(blockTest).then((result) => {
-          console.log(result);
-          i++;
-          if (i < 10) theLoop(i);
-      });
-  }, 10000);
-})(0);
+// (function theLoop (i) {
+//   setTimeout(function () {
+//       let blockTest = new Block("Test Block - " + (i + 1));
+//       Blockchain.addBlock(blockTest).then((result) => {
+//           console.log(result);
+//           i++;
+//           if (i < 10) theLoop(i);
+//       });
+//   }, 10000);
+// })(0);
 
+const myBlockchain = new Blockchain();
+
+(function theLoop (i) {
+ setTimeout(function () {
+
+     let blockTest = new Block("Test Block -"  + (i + 1));
+     myBlockchain.addBlock(blockTest).then((result) => {
+         console.log(result);
+         i++;
+         if (i < 10) theLoop(i);
+     });
+ }, 10000);
+})(0);
