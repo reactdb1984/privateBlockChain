@@ -32,11 +32,9 @@ class Blockchain{
 getBlockHeight(){
   return new Promise((resolve, reject)  => {
   let i=0;
-    this.chain.createReadStream()
-    .on('data',  (data) => {
+    this.chain.createReadStream().on('data',  (data) => {
         i++;
-    })
-    .on('error',  (err) => {
+    }).on('error',  (err) => {
         reject(err)
     })
     .on('close',  () => {
@@ -65,9 +63,7 @@ async addBlock(newBlock){
          newBlock.previousBlockHash = lastBlock.hash;
          
          newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
-    return 
-  
-    newBlock 
+    return newBlock 
     
   }
 
