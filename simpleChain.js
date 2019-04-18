@@ -6,11 +6,11 @@ const SHA256 = require("crypto-js/sha256");
 const level = require("level");
 
 /* ===== Block Class ==============================
-|  Class with a constructor for block 			   |
+|  Class with a constructor for block          |
 |  ===============================================*/
 
 class Block{
-	constructor(data){
+  constructor(data){
      this.hash = "",
      this.height = 0,
      this.body = data,
@@ -20,7 +20,7 @@ class Block{
 }
 
 /* ===== Blockchain Class ==========================
-|  Class with a constructor for new blockchain 		|
+|  Class with a constructor for new blockchain    |
 |  ================================================*/
 
 class Blockchain{
@@ -67,20 +67,13 @@ async addBlock(newBlock){
     
   }
 
-
-
-
-  // Get block 
-
-
-
     // get block
     getBlock(blockHeight){
       // return object as a single string
       return new Promise((resolve, reject) => {
         this.chain.get(blockHeight, function(err, value) {
             if (err) return console.log('Not found!', err);
-            resolve(value);
+            resolve(JSON.parse(value));
         });
     })
     }
@@ -132,41 +125,6 @@ async addBlock(newBlock){
 }
 
 
-
-// (function theLoop (i) {
-//   setTimeout( () => {
-//       let blockTest = new Block("Test Block - " + (i + 1));
-//       new Blockchain().addBlock(new Block(`Test data ${i}`)).then((result) => {
-//           console.log(result);
-//           i++;
-//           if (i < 10) theLoop(i);
-//       },
-//       },),
-//   }, 10000);
-// })(0);
-
-// (function theLoop (i) {
-//   setTimeout(function () {
-//       let blockTest = new Block("Test Block - " + (i + 1));
-//      new Blockchain.addBlock(blockTest).then((result) => {
-//           console.log(result);
-//           i++;
-//           if (i < 10) theLoop(i);
-//       });
-//   }, 10000);
-// })(0);
-
-
-// (function theLoop (i) {
-//   setTimeout(function () {
-//       let blockTest = new Block("Test Block - " + (i + 1));
-//       Blockchain.addBlock(blockTest).then((result) => {
-//           console.log(result);
-//           i++;
-//           if (i < 10) theLoop(i);
-//       });
-//   }, 10000);
-// })(0);
 
 const myBlockchain = new Blockchain();
 
