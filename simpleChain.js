@@ -25,23 +25,26 @@ class Block{
 
 class Blockchain{
   constructor(){
+    
     this.chain = level("./chaindata");
-    this.chain.put(0,JSON.stringify(new Block("data")))
-  }
+if(this.getBlockHeight() === 0)() =>{
+     this.chain.put(0,JSON.stringify(new Block("data"),console.log("this is a genisis block")))
+  }}
+  
 
-getBlockHeight(){
-  return new Promise((resolve, reject)  => {
-  let i=0;
-    this.chain.createReadStream().on('data',  (data) => {
-        i++;
-    }).on('error',  (err) => {
-        reject(err)
-    })
-    .on('close',  () => {
-        resolve(i);
-    });
-});
-}
+  getBlockHeight(){
+    return new Promise((resolve, reject)  => {
+    let count=-1;
+      this.chain.createReadStream().on('data',  (data) => {
+          count++;
+      }).on('error',  (err) => {
+          reject(err)
+      })
+      .on('close',  () => {
+          resolve(count);
+      });
+  });
+  }
 
 
 async addBlock(newBlock){
