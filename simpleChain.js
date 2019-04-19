@@ -17,6 +17,13 @@ class Block{
      this.time = 0,
      this.previousBlockHash = ""
     }
+    static genisis() {
+      let g = new this("Genesis block");
+      g.hash = SHA256(JSON.stringify(g)).toString();
+   
+
+      return g; 
+    }
 }
 
 /* ===== Blockchain Class ==========================
@@ -27,14 +34,14 @@ class Blockchain{
   constructor(){
     
     this.chain = level("./chaindata");
-if(this.getBlockHeight() === 0)() =>{
-     this.chain.put(0,JSON.stringify(new Block("data"),console.log("this is a genisis block")))
-  }}
+
+    this.chain.put(0,JSON.stringify(Block.genisis()))
+  } 
   
 
   getBlockHeight(){
     return new Promise((resolve, reject)  => {
-    let count=-1;
+    let count=0;
       this.chain.createReadStream().on('data',  (data) => {
           count++;
       }).on('error',  (err) => {
