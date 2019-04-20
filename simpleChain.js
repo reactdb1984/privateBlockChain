@@ -18,13 +18,17 @@ class Block{
      this.previousBlockHash = ""
     }
     static createGensisBlock() {
-     
-     let genblock =  new this("Genesis block").hash = SHA256(JSON.stringify(new this("Genesis block"))).toString();
-   console.log("this is the genisis block")
 
-      return genblock; 
-    }
-}
+      let genblock =  new this("Genesis block")
+      genblock.hash = SHA256(JSON.stringify(genblock).toString())
+      genblock.time = new Date().getTime().toString().slice(0,-3);
+      console.log("this is the genisis block")
+
+       return genblock;
+     }
+ }
+ const myGenBlock = Block.createGensisBlock()
+ console.log(myGenBlock)
 
 /* ===== Blockchain Class ==========================
 |  Class with a constructor for new blockchain    |
@@ -149,3 +153,5 @@ const myBlockchain = new Blockchain();
      });
  }, 10000);
 })(0);
+module.exports = Block;
+module.exports = Blockchain;
