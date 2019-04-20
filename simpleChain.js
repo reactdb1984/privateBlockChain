@@ -18,7 +18,7 @@ class Block{
      this.previousBlockHash = ""
     }
     static createGensisBlock() {
-      let g = new this("Genesis block");
+     
      let genblock =  new this("Genesis block").hash = SHA256(JSON.stringify(new this("Genesis block"))).toString();
    console.log("this is the genisis block")
 
