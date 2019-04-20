@@ -17,12 +17,12 @@ class Block{
      this.time = 0,
      this.previousBlockHash = ""
     }
-    static genisis() {
-      let g = new this("Genesis block");
-      g.hash = SHA256(JSON.stringify(g)).toString();
-   
+    static createGensisBlock() {
+    
+     let genblock =  new this("Genesis block").hash = SHA256(JSON.stringify(new this("Genesis block"))).toString();
+   console.log("this is the genisis block")
 
-      return g; 
+      return genblock; 
     }
 }
 
@@ -35,7 +35,7 @@ class Blockchain{
     
     this.chain = level("./chaindata");
 
-    this.chain.put(0,JSON.stringify(Block.genisis()))
+    this.chain.put(0,JSON.stringify(Block.createGensisBlock()))
   } 
   
 
