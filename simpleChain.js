@@ -38,8 +38,10 @@ class Blockchain{
   constructor(){
     
     this.chain = level("./chaindata");
-
-    this.chain.put(0,JSON.stringify(Block.createGensisBlock()))
+if  ( this.getBlockHeight() === 0 ) {
+  this.chain.put(0,JSON.stringify(Block.createGensisBlock()))
+}
+    
   } 
   
 
