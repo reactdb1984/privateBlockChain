@@ -20,7 +20,8 @@ class Block{
     static createGensisBlock() {
 
       let genblock =  new this("Genesis block")
-      genblock.hash = SHA256(JSON.stringify(genblock).toString())
+      genblock.hash = SHA256(JSON.stringify(genblock).toString());
+      genblock.height = 0;
       genblock.time = new Date().getTime().toString().slice(0,-3);
       console.log("this is the genisis block")
 
@@ -38,10 +39,9 @@ class Blockchain{
   constructor(){
     
     this.chain = level("./chaindata");
-if  ( this.getBlockHeight() === 0 ) {
-  this.chain.put(0,JSON.stringify(Block.createGensisBlock()))
-}
-    
+    // this.addBlock(new Block("First block in the chain - Genesis block"));
+  this.getBlockHeight() === 0 ? this.chain.put(0,JSON.stringify(Block.createGensisBlock())) : null
+    // this.chain.put(0,JSON.stringify(Block.createGensisBlock()))
   } 
   
 
