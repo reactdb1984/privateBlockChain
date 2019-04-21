@@ -17,19 +17,19 @@ class Block{
      this.time = 0,
      this.previousBlockHash = ""
     }
-    static createGensisBlock() {
+    // static createGensisBlock() {
 
-      let genblock =  new this("Genesis block")
-      genblock.hash = SHA256(JSON.stringify(genblock).toString());
-      genblock.height = 0;
-      genblock.time = new Date().getTime().toString().slice(0,-3);
-      console.log("this is the genisis block")
+    //   let genblock =  new this("Genesis block")
+    //   genblock.hash = SHA256(JSON.stringify(genblock).toString());
+    //   genblock.height = 0;
+    //   genblock.time = new Date().getTime().toString().slice(0,-3);
+    //   console.log("this is the genisis block")
 
-       return genblock;
+    //    return genblock;
      }
- }
- const myGenBlock = Block.createGensisBlock()
- console.log(myGenBlock)
+//  }
+//  const myGenBlock = Block.createGensisBlock()
+//  console.log(myGenBlock)
 
 /* ===== Blockchain Class ==========================
 |  Class with a constructor for new blockchain    |
@@ -40,7 +40,7 @@ class Blockchain{
     
     this.chain = level("./chaindata");
     // this.addBlock(new Block("First block in the chain - Genesis block"));
-  this.getBlockHeight() === 0 ? this.chain.put(0,JSON.stringify(Block.createGensisBlock())) : null
+  // this.getBlockHeight() === 0 ? this.chain.put(0,JSON.stringify(Block.createGensisBlock())) : null
     // this.chain.put(0,JSON.stringify(Block.createGensisBlock()))
   } 
   
@@ -54,6 +54,7 @@ class Blockchain{
           reject(err)
       })
       .on('close',  () => {
+        console.log('Block Height' + count);
           resolve(count);
       });
   });
@@ -61,6 +62,12 @@ class Blockchain{
 
 
 async addBlock(newBlock){
+ let lengthOfChain = await this.getBlockHeight();
+ if(lengthOfChain === 0){
+   this.chain.put(0,JSON.stringify(new Block("genisis")))
+   console.log("genisis block added ")
+ }
+
 
   let createdBlock = await this.createBlock(newBlock)
       this.chain.put(createdBlock.height,JSON.stringify(createdBlock))
